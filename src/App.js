@@ -1,7 +1,7 @@
-import ApiContextProvider from './contexts/ApiContext';
-import AccountsContextProvider from './contexts/AccountsContext';
-import InjectedAccount from "./components/Accounts";
-import RecentBlocks from "./components/RecentBlocks";
+import ApiContextProvider from './Contexts/ApiContext';
+import AccountsContextProvider from './Contexts/AccountsContext';
+import InjectedAccount from "./Components/Accounts";
+import RecentBlocks from "./Components/RecentBlocks";
 
 function App() {
   return (

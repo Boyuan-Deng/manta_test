@@ -1,5 +1,5 @@
 import { BigNumber } from 'bignumber.js';
-import { useApi } from "../../contexts/ApiContext";
+import { useApi } from "../../Contexts/ApiContext";
 import React, { useEffect, useState } from 'react';
 
 import ListItem from '@mui/material/ListItem';
@@ -9,7 +9,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
 
-const Account = ({ account }) => {
+const Account = ({ account, imageId }) => {
   const { api } = useApi();
   const [ balance, setBalance ] = useState(null); 
 
@@ -22,6 +22,7 @@ const Account = ({ account }) => {
     });
   }
 
+
   useEffect(() => {
     getAccountMetadata();
   }, []);
@@ -30,7 +31,7 @@ const Account = ({ account }) => {
   return (
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="" />
+          <Avatar alt="Remy Sharp" src={require("../../Asset/Avatars/Avatar Notion-02.png")} />
         </ListItemAvatar>
         <ListItemText
           primary={`${account.meta.name}`}

@@ -10,7 +10,7 @@ const Block = ({ blockHeader }) => {
   return (
     <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="" />
+          <Avatar alt="Remy Sharp" src={require("../../Asset/BlockImages/minecraft_grass.png")} />
         </ListItemAvatar>
         <ListItemText
           secondary={

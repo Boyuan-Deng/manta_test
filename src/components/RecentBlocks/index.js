@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useApi } from "../../contexts/ApiContext";
+import { useApi } from "../../Contexts/ApiContext";
 import Block from "../Block";
 import List from '@mui/material/List';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -10,13 +10,15 @@ const RecentBlocks = () => {
 
     const { api } = useApi();
     const [ lastTenBlocks, setLastTenBlocks ] = useState([]);
-     const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
+    const [isUpdating, setIsUpdating] = useState(false); 
     const getLastestBlockHeader = async () => {
         if (api) {
             await api.isReady;
             await api.rpc.chain.subscribeNewHeads((lastHeader) => {
                 console.log(`last block #${lastHeader.number} has hash ${lastHeader.hash}`);
-                getLastTenBlocks(lastHeader)
+                setIsUpdating(true);
+                getLastTenBlocks(lastHeader);
             });
         }
     };
@@ -33,6 +35,7 @@ const RecentBlocks = () => {
             const tenBlocksComponent = headers.map(blockHeader => {
                 return (<Block key={blockHeader.hash} blockHeader={blockHeader} />)
             });
+            setIsUpdating(false);
             setIsLoading(false);
             setLastTenBlocks(tenBlocksComponent);
         }
@@ -44,8 +47,9 @@ const RecentBlocks = () => {
 
     return (
         <Box>
-            {isLoading && <CircularProgress color="secondary" />}
             <Divider>Block Information Board</Divider>
+            {isLoading && <CircularProgress color="secondary" />}
+            {isUpdating && <Box>Updating <CircularProgress size="1rem"/></Box>}
             {!isLoading && <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
                 {lastTenBlocks}
             </List>}

@@ -11,12 +11,20 @@ const getAccounts = async (setAccounts) => {
 const AccountsContext = React.createContext();
 
 const AccountsContextProvider = (props) => {
-    const [accounts, setAccounts] = useState(null)
+    const [accounts, setAccounts] = useState(null);
+    const [isPolkadotJsInjected, setIsPolkadotJsInjected] = useState(!!window.injectedWeb3['polkadot-js']);
     useEffect(() => {
-      getAccounts().then(accounts => {
-        setAccounts(accounts);
-    })
-    }, [])
+      if (isPolkadotJsInjected) {
+        getAccounts().then(accounts => {
+          console.log("account here: ", accounts);
+          setAccounts(accounts);
+        })
+      } else {
+        setTimeout(() => {
+          setIsPolkadotJsInjected(!!window.injectedWeb3['polkadot-js'])
+        }, 500);
+      }
+    }, [isPolkadotJsInjected])
 
 
   return (
@@ -26,7 +34,7 @@ const AccountsContextProvider = (props) => {
   );
 };
 
-const useAccounts = () => ({...useContext(AccountsContext)});
+const useAccounts = () => ({ ...useContext(AccountsContext) });
 
 export { useAccounts };
 export default AccountsContextProvider;

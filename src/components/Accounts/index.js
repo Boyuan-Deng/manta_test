@@ -1,30 +1,40 @@
-// import Account from "./components/Account"
-
-import { useAccounts } from "../../contexts/AccountsContext/index.js";
-import { useApi } from "../../contexts/ApiContext";
-
+import { useEffect, useState } from "react";
+import { useAccounts } from "../../contexts/AccountsContext";
+import Account from "../Account";
 
 
-const getAccountInfo = async (api, accountAddr) => {
-    const accountInfo = await api.query.system.account(accountAddr);
-    return accountInfo;
-}
 const InjectedAccounts = () => {
-    const {api , apiState} = useApi();
-    const accounts = useAccounts();
-    if (apiState === "READY") {
-        console.log("value: ", apiState);
-        console.log('accounts: ', accounts)
-        console.log("type of accounts: ", typeof(accounts))
-        Object.values(accounts).map(accountAddr => {
-            getAccountInfo(api, accountAddr).then((accountInfo) => {
-                console.log(`Account - ${accountAddr} has ${accountInfo}`)
+  const accounts = useAccounts();
+  const [ retry, setRetry ] = useState(0);
+  const [ accountsComponent, setAccountsComponent ] = useState(null);
+  useEffect(() => {
+        if (!!accounts && Object.entries(accounts).length !== 0) {
+            const accountComponent = Object.values(accounts).map((account) => {
+                return (<Account account={account}/>);
             })
-        })
-    }
+            setAccountsComponent(accountComponent);
+            
+        } else {
+            if (retry < 3) {
+                setTimeout(() => {
+                    console.log("retry: ", retry)
+                    const addOne = num => num + 1;
+                    setRetry(addOne(retry));
+                }, 500);
+            }
+        }
+
+    }, [retry]);
+
+
+
+
 
   return (
-    <div></div>
+    <div>
+    <div>This is Injected Accounts Component</div>
+    <div>{accountsComponent}</div>
+    </div>
   );
 };
 

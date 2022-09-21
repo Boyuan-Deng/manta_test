@@ -2,6 +2,12 @@ import { BigNumber } from 'bignumber.js';
 import { useApi } from "../../contexts/ApiContext";
 import React, { useEffect, useState } from 'react';
 
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+
 
 const Account = ({ account }) => {
   const { api } = useApi();
@@ -22,11 +28,36 @@ const Account = ({ account }) => {
 
   
   return (
-    <div id={account.address}>
-      <div>{`Account name: ${account.meta.name}`}</div>
-      <div>{`Account address: ${account.address}`}</div>
-      <div>{`Account balance: ${balance}`}</div>
-    </div>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar alt="Remy Sharp" src="" />
+        </ListItemAvatar>
+        <ListItemText
+          primary={`${account.meta.name}`}
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'block' }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                Account address:
+              </Typography>
+              { `${account.address}` }
+              <Typography
+                sx={{ display: 'block' }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                Account balance:
+              </Typography>
+              { `${balance} DOL` }
+            </React.Fragment>
+          }
+        />
+      </ListItem>
   );
 };
 

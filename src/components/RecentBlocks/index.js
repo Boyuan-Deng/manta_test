@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useApi } from "../../contexts/ApiContext";
 import Block from "../Block";
+import List from '@mui/material/List';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 
 const RecentBlocks = () => {
 
     const { api } = useApi();
     const [ lastTenBlocks, setLastTenBlocks ] = useState([]);
+     const [isLoading, setIsLoading] = useState(true)
     const getLastestBlockHeader = async () => {
         if (api) {
             await api.isReady;
@@ -26,8 +31,9 @@ const RecentBlocks = () => {
                 header = await api.rpc.chain.getHeader(header.parentHash);
             }
             const tenBlocksComponent = headers.map(blockHeader => {
-                return (<Block blockHeader={blockHeader} />)
+                return (<Block key={blockHeader.hash} blockHeader={blockHeader} />)
             });
+            setIsLoading(false);
             setLastTenBlocks(tenBlocksComponent);
         }
     }
@@ -37,10 +43,13 @@ const RecentBlocks = () => {
     }, [api])
 
     return (
-        <div>
-            <div>this is recent Blocks</div>
-            {lastTenBlocks}
-        </div>
+        <Box>
+            {isLoading && <CircularProgress color="secondary" />}
+            <Divider>Block Information Board</Divider>
+            {!isLoading && <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper'}}>
+                {lastTenBlocks}
+            </List>}
+        </Box>
     )
 }
 

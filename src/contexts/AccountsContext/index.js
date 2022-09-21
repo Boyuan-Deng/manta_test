@@ -16,7 +16,6 @@ const AccountsContextProvider = (props) => {
     useEffect(() => {
       if (isPolkadotJsInjected) {
         getAccounts().then(accounts => {
-          console.log("account here: ", accounts);
           setAccounts(accounts);
         })
       } else {

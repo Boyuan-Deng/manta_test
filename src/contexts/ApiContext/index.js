@@ -51,12 +51,10 @@ const connect = async (dispatch) => {
 
   // Set listeners for disconnection and reconnection event.
   _api.on('connected', () => {
-    console.log('polkadot.js api connected');
     dispatch({ type: 'CONNECT', payload: _api });
 
     // `ready` event is not emitted upon reconnection and is checked explicitly here.
     _api.isReady.then(async () => {
-      console.log('polkadot.js api connected successfully 1');
       dispatch({ type: 'CONNECT_SUCCESS' });
     });
   });

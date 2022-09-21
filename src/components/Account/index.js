@@ -9,8 +9,7 @@ const Account = ({ account }) => {
 
   const getAccountMetadata = async () => {
     await api.isReady;
-    const unsub = await api.query.system.account(account.address, ({ nonce, data: balance }) => {
-      console.log(`free balance is ${balance.free} with ${balance.reserved} reserved and a nonce of ${nonce}`);
+    await api.query.system.account(account.address, ({ nonce, data: balance }) => {
       const balanceInAtomicUnit = new BigNumber(balance.free.toString());
       const balanceInBaseUnit = balanceInAtomicUnit.div(new BigNumber("10e17")).toNumber();
       setBalance(balanceInBaseUnit);
@@ -23,7 +22,7 @@ const Account = ({ account }) => {
 
   
   return (
-    <div>
+    <div id={account.address}>
       <div>{`Account name: ${account.meta.name}`}</div>
       <div>{`Account address: ${account.address}`}</div>
       <div>{`Account balance: ${balance}`}</div>

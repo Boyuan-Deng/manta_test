@@ -17,7 +17,6 @@ const InjectedAccounts = () => {
         } else {
             if (retry < 3) {
                 setTimeout(() => {
-                    console.log("retry: ", retry)
                     const addOne = num => num + 1;
                     setRetry(addOne(retry));
                 }, 500);
